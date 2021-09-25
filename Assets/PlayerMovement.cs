@@ -4,31 +4,31 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 public class PlayerMovement : MonoBehaviour {
-    private Rigidbody2D rb2D;
-    private Animator animator;
+    private Rigidbody2D _rb2D;
+    private Animator _animator;
 
     [SerializeField] private float moveSpeed = 2f;
 
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Direction = Animator.StringToHash("direction");
 
-    void Start() {
-        rb2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+    private void Start() {
+        _rb2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         
         LoadGame();
     }
 
-    void FixedUpdate() {
+    private void FixedUpdate() {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
 
-        rb2D.MovePosition(rb2D.position + new Vector2(x, y) * moveSpeed * Time.deltaTime);
-        rb2D.velocity = Vector2.zero;
+        _rb2D.MovePosition(_rb2D.position + new Vector2(x, y) * moveSpeed * Time.deltaTime);
+        _rb2D.velocity = Vector2.zero;
 
-        animator.SetBool(Moving, x != 0 || y != 0);
+        _animator.SetBool(Moving, x != 0 || y != 0);
 
-        int direction = animator.GetInteger(Direction);
+        int direction = _animator.GetInteger(Direction);
 
         if (y > 0) {
             direction = 1;
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour {
             direction = 2;
         }
 
-        animator.SetInteger(Direction, direction);
+        _animator.SetInteger(Direction, direction);
     }
 
     private void OnApplicationQuit() {
@@ -54,17 +54,17 @@ public class PlayerMovement : MonoBehaviour {
     PlayerSaveData CreateSaveData() {
         PlayerSaveData data = new PlayerSaveData();
 
-        Vector2 pos = rb2D.position;
+        Vector2 pos = _rb2D.position;
         data.posX = pos.x;
         data.posY = pos.y;
-        data.direction = animator.GetInteger(Direction);
+        data.direction = _animator.GetInteger(Direction);
 
         return data;
     }
 
     private void LoadFromSaveData(PlayerSaveData data) {
-        rb2D.position = new Vector2(data.posX, data.posY);
-        animator.SetInteger(Direction, data.direction);
+        _rb2D.position = new Vector2(data.posX, data.posY);
+        _animator.SetInteger(Direction, data.direction);
     }
 
     void SaveGame() {
