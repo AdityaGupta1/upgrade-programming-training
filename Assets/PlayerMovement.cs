@@ -7,18 +7,17 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody2D rb2D;
     private Animator animator;
 
+    [SerializeField] private float moveSpeed = 2f;
+
+    private static readonly int Moving = Animator.StringToHash("moving");
+    private static readonly int Direction = Animator.StringToHash("direction");
+
     void Start() {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         
         LoadGame();
     }
-
-    [SerializeField] private float moveSpeed = 2f;
-
-    private static readonly int Moving = Animator.StringToHash("moving");
-    private static readonly int Direction = Animator.StringToHash("direction");
-
 
     void FixedUpdate() {
         float x = Input.GetAxis("Horizontal");
@@ -70,8 +69,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void SaveGame() {
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath
-                                      + "/playerSave.dat");
+        FileStream file = File.Create(Application.persistentDataPath + "/playerSave.dat");
         bf.Serialize(file, CreateSaveData());
         file.Close();
         Debug.Log("Game data saved!");
@@ -81,7 +79,7 @@ public class PlayerMovement : MonoBehaviour {
         String path = Application.persistentDataPath + "/playerSave.dat";
         
         if (!File.Exists(path)) {
-            Debug.LogError("There is no save data!");
+            Debug.Log("There is no save data!");
             return;
         }
         
