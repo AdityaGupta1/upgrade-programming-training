@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour {
+public class PlayerControl : MonoBehaviour {
     private Rigidbody2D rb2D;
     private Animator animator;
 
@@ -40,4 +41,29 @@ public class PlayerMovement : MonoBehaviour {
         
         animator.SetInteger(Direction, direction);
     }
+    
+    public void SaveData(SaveData data) {
+        PlayerSaveData playerData = new PlayerSaveData();
+
+        Vector2 pos = rb2D.position;
+        playerData.posX = pos.x;
+        playerData.posY = pos.y;
+        playerData.direction = animator.GetInteger(Direction);
+
+        data.playerData = playerData;
+    }
+
+    public void LoadData(SaveData data) {
+        PlayerSaveData playerData = data.playerData;
+        
+        rb2D.position = new Vector2(playerData.posX, playerData.posY);
+        animator.SetInteger(Direction, playerData.direction);
+    }
+}
+
+[Serializable]
+public class PlayerSaveData {
+    public float posX;
+    public float posY;
+    public int direction;
 }

@@ -6,11 +6,16 @@ using UnityEngine.UI;
 
 public class SaveInfo : MonoBehaviour {
     [SerializeField] private int saveNumber;
+
+    [SerializeField] private GameObject player;
+    private PlayerControl playerControl;
     
     private Text saveTimeText;
 
     private void Start() {
         transform.Find("panel_saveInfo/text_saveNumber").gameObject.GetComponent<Text>().text = "Save " + saveNumber;
+
+        playerControl = player.GetComponent<PlayerControl>();
 
         saveTimeText = transform.Find("panel_saveInfo/text_saveTime").gameObject.GetComponent<Text>();
 
@@ -27,12 +32,14 @@ public class SaveInfo : MonoBehaviour {
         DateTime time = DateTime.UtcNow;
         UpdateTime(time.ToLocalTime());
         data.time = time.ToBinary();
+        
+        playerControl.SaveData(data);
 
         return data;
     }
 
-    private void LoadFromSaveData(SaveData data) {
-        // TODO
+    private void LoadData(SaveData data) {
+        playerControl.LoadData(data);
     }
 
     private String GetSavePath() {
@@ -42,6 +49,7 @@ public class SaveInfo : MonoBehaviour {
     public void Save() {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(GetSavePath());
+        SaveData data = CreateSaveData();
         bf.Serialize(file, CreateSaveData());
         file.Close();
         Debug.Log("Saved: " + saveNumber);
@@ -67,7 +75,7 @@ public class SaveInfo : MonoBehaviour {
             UpdateTime(DateTime.FromBinary(data.time).ToLocalTime());
         }
         else {
-            LoadFromSaveData(data);
+            LoadData(data);
             Debug.Log("Loaded: " + saveNumber);
         }
     }
@@ -76,4 +84,6 @@ public class SaveInfo : MonoBehaviour {
 [Serializable]
 public class SaveData {
     public long time;
+
+    public PlayerSaveData playerData;
 }
