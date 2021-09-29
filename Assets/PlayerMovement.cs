@@ -4,7 +4,7 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody2D rb2D;
     private Animator animator;
 
-    void Start() {
+    private void Start() {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour {
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Direction = Animator.StringToHash("direction");
 
-    void FixedUpdate() {
+    private void FixedUpdate() {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
 
