@@ -32,7 +32,7 @@ public class SaveInfo : MonoBehaviour {
     }
 
     private void LoadFromSaveData(SaveData data) {
-        
+        // TODO
     }
 
     private String GetSavePath() {
