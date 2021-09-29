@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
@@ -13,6 +12,9 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField]
     private float moveSpeed = 2f;
 
+    private static readonly int Moving = Animator.StringToHash("moving");
+    private static readonly int Direction = Animator.StringToHash("direction");
+
     void FixedUpdate() {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
@@ -20,9 +22,9 @@ public class PlayerMovement : MonoBehaviour {
         rb2D.MovePosition(rb2D.position + new Vector2(x, y) * moveSpeed * Time.deltaTime);
         rb2D.velocity = Vector2.zero;
         
-        animator.SetBool("moving", x != 0 || y != 0);
+        animator.SetBool(Moving, x != 0 || y != 0);
 
-        int direction = animator.GetInteger("direction");
+        int direction = animator.GetInteger(Direction);
         
         if (y > 0) {
             direction = 1;
@@ -36,6 +38,6 @@ public class PlayerMovement : MonoBehaviour {
             direction = 2;
         }
         
-        animator.SetInteger("direction", direction);
+        animator.SetInteger(Direction, direction);
     }
 }
