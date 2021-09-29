@@ -5,19 +5,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SaveInfo : MonoBehaviour {
+    // SaveInfo display fields
     [SerializeField] private int saveNumber;
+    private Text saveTimeText;
+    
+    // menu elements
+    [SerializeField] private GameObject canvas;
+    private Menu menu;
 
+    // objects that save to and load from SaveData
     [SerializeField] private GameObject player;
     private PlayerControl playerControl;
-    
-    private Text saveTimeText;
 
     private void Start() {
         transform.Find("panel_saveInfo/text_saveNumber").gameObject.GetComponent<Text>().text = "Save " + saveNumber;
-
-        playerControl = player.GetComponent<PlayerControl>();
-
         saveTimeText = transform.Find("panel_saveInfo/text_saveTime").gameObject.GetComponent<Text>();
+
+        menu = canvas.GetComponent<Menu>();
+        
+        playerControl = player.GetComponent<PlayerControl>();
 
         Load(true);
     }
@@ -76,6 +82,7 @@ public class SaveInfo : MonoBehaviour {
         }
         else {
             LoadData(data);
+            menu.Close();
             Debug.Log("Loaded: " + saveNumber);
         }
     }
