@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SaveInfo : MonoBehaviour {
@@ -38,14 +39,18 @@ public class SaveInfo : MonoBehaviour {
         DateTime time = DateTime.UtcNow;
         UpdateTime(time.ToLocalTime());
         data.time = time.ToBinary();
-        
-        playerControl.SaveData(data);
 
+        playerControl.SaveData(data);
+        data.tookTreasure = Data.tookTreasure;
+        data.scene = SceneManager.GetActiveScene().name;
+        
         return data;
     }
 
     private void LoadData(SaveData data) {
         playerControl.LoadData(data);
+        Data.tookTreasure = data.tookTreasure;
+        SceneManager.LoadScene(data.scene);
     }
 
     private String GetSavePath() {
@@ -93,4 +98,6 @@ public class SaveData {
     public long time;
 
     public PlayerSaveData playerData;
+    public bool tookTreasure;
+    public string scene;
 }
