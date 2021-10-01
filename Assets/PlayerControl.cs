@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour {
-    private Rigidbody2D rb2D;
-    private Animator animator;
+    public Rigidbody2D rb2D;
+    public Animator animator;
 
     private void Start() {
         rb2D = GetComponent<Rigidbody2D>();
@@ -55,7 +55,6 @@ public class PlayerControl : MonoBehaviour {
 
     public void LoadData(SaveData data) {
         PlayerSaveData playerData = data.playerData;
-        
         rb2D.position = new Vector2(playerData.posX, playerData.posY);
         animator.SetInteger(Direction, playerData.direction);
     }
