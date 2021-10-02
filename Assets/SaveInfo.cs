@@ -9,7 +9,7 @@ public class SaveInfo : MonoBehaviour {
     // SaveInfo display fields
     [SerializeField] private int saveNumber;
     private Text saveTimeText;
-    
+
     // menu elements
     [SerializeField] private GameObject canvas;
     private Menu menu;
@@ -23,7 +23,7 @@ public class SaveInfo : MonoBehaviour {
         saveTimeText = transform.Find("panel_saveInfo/text_saveTime").gameObject.GetComponent<Text>();
 
         menu = canvas.GetComponent<Menu>();
-        
+
         playerControl = player.GetComponent<PlayerControl>();
 
         Load(true);
@@ -33,25 +33,20 @@ public class SaveInfo : MonoBehaviour {
         saveTimeText.text = time.ToString("MM/dd/yy hh:mm tt");
     }
 
-    private SaveData CreateSaveData() {
-        SaveData data = new SaveData();
+    private void UpdateSaveData() {
+        SaveData data = SaveData.instance();
 
         DateTime time = DateTime.UtcNow;
         UpdateTime(time.ToLocalTime());
         data.time = time.ToBinary();
 
         data.scene = SceneManager.GetActiveScene().name;
-        data.tookTreasure = Data.tookTreasure;
         playerControl.SaveData(data);
-        return data;
     }
 
     private void LoadData(SaveData data) {
+        SaveData.setSaveData(data);
         SceneManager.LoadScene(data.scene);
-        Data.tookTreasure = data.tookTreasure;
-        // playerControl.LoadData(data);
-        Data.posX = data.playerData.posX;
-        Data.posY = data.playerData.posY;
     }
 
     private String GetSavePath() {
@@ -61,10 +56,9 @@ public class SaveInfo : MonoBehaviour {
     public void Save() {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(GetSavePath());
-        SaveData data = CreateSaveData();
-        bf.Serialize(file, CreateSaveData());
+        UpdateSaveData();
+        bf.Serialize(file, SaveData.instance());
         file.Close();
-        Debug.Log("Saved: " + saveNumber);
     }
 
     public void Load() {
@@ -73,11 +67,11 @@ public class SaveInfo : MonoBehaviour {
 
     private void Load(bool updateTime) {
         String path = GetSavePath();
-        
+
         if (!File.Exists(path)) {
             return;
         }
-        
+
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Open(path, FileMode.Open);
         SaveData data = (SaveData) bf.Deserialize(file);
@@ -85,21 +79,30 @@ public class SaveInfo : MonoBehaviour {
 
         if (updateTime) {
             UpdateTime(DateTime.FromBinary(data.time).ToLocalTime());
-        }
-        else {
+        } else {
             LoadData(data);
             menu.Close();
-
-            Debug.Log("Loaded: " + saveNumber);
         }
     }
 }
 
 [Serializable]
 public class SaveData {
+    private static SaveData INSTANCE = new SaveData();
+
+    private SaveData() { }
+
+    public static SaveData instance() {
+        return INSTANCE;
+    }
+
+    public static void setSaveData(SaveData data) {
+        INSTANCE = data;
+    }
+
     public long time;
 
-    public PlayerSaveData playerData;
-    public bool tookTreasure;
-    public string scene;
+    public PlayerSaveData playerData = new PlayerSaveData();
+    public bool tookTreasure = false;
+    public string scene = "level 1";
 }

@@ -8,7 +8,10 @@ public class PlayerControl : MonoBehaviour {
     private void Start() {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        rb2D.position = new Vector2(Data.posX, Data.posY);
+        
+        PlayerSaveData playerData = global::SaveData.instance().playerData;
+        rb2D.position = new Vector2(playerData.posX, playerData.posY);
+        animator.SetInteger(Direction, playerData.direction);
     }
 
     [SerializeField]
@@ -41,7 +44,7 @@ public class PlayerControl : MonoBehaviour {
         }
         
         animator.SetInteger(Direction, direction);
-        Data.posY = rb2D.position[1];
+        global::SaveData.instance().playerData.posY = rb2D.position.y;
     }
     
     public void SaveData(SaveData data) {
@@ -54,17 +57,11 @@ public class PlayerControl : MonoBehaviour {
 
         data.playerData = playerData;
     }
-
-    public void LoadData(SaveData data) {
-        PlayerSaveData playerData = data.playerData;
-        rb2D.position = new Vector2(playerData.posX, playerData.posY);
-        animator.SetInteger(Direction, playerData.direction);
-    }
 }
 
 [Serializable]
 public class PlayerSaveData {
-    public float posX;
-    public float posY;
-    public int direction;
+    public float posX = -1.6f;
+    public float posY = 0.0f;
+    public int direction = 0;
 }
