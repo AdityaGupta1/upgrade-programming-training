@@ -14,10 +14,12 @@ public class LevelControl : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "very cool scene")
             {
+                Data.posX = -7;
                 SceneManager.LoadScene("SampleScene");
             }
             else
             {
+                Data.posX = 8;
                 SceneManager.LoadScene("very cool scene");
             }
 

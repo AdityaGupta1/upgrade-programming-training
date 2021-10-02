@@ -2,12 +2,13 @@ using System;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour {
-    public Rigidbody2D rb2D;
-    public Animator animator;
+    private Rigidbody2D rb2D;
+    private Animator animator;
 
     private void Start() {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        rb2D.position = new Vector2(Data.posX, Data.posY);
     }
 
     [SerializeField]
@@ -40,6 +41,7 @@ public class PlayerControl : MonoBehaviour {
         }
         
         animator.SetInteger(Direction, direction);
+        Data.posY = rb2D.position[1];
     }
     
     public void SaveData(SaveData data) {

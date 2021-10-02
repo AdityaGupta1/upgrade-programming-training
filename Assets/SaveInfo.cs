@@ -43,15 +43,15 @@ public class SaveInfo : MonoBehaviour {
         data.scene = SceneManager.GetActiveScene().name;
         data.tookTreasure = Data.tookTreasure;
         playerControl.SaveData(data);
-        Debug.Log(data.playerData.posX);
-        
         return data;
     }
 
     private void LoadData(SaveData data) {
         SceneManager.LoadScene(data.scene);
         Data.tookTreasure = data.tookTreasure;
-        playerControl.LoadData(data);
+        // playerControl.LoadData(data);
+        Data.posX = data.playerData.posX;
+        Data.posY = data.playerData.posY;
     }
 
     private String GetSavePath() {
@@ -64,7 +64,7 @@ public class SaveInfo : MonoBehaviour {
         SaveData data = CreateSaveData();
         bf.Serialize(file, CreateSaveData());
         file.Close();
-        // Debug.Log("Saved: " + saveNumber);
+        Debug.Log("Saved: " + saveNumber);
     }
 
     public void Load() {
@@ -89,9 +89,8 @@ public class SaveInfo : MonoBehaviour {
         else {
             LoadData(data);
             menu.Close();
-            Debug.Log(playerControl.rb2D.position);
 
-            // Debug.Log("Loaded: " + saveNumber);
+            Debug.Log("Loaded: " + saveNumber);
         }
     }
 }

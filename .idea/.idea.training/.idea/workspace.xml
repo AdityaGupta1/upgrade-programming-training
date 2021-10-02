@@ -7,6 +7,7 @@
     <list default="true" id="9d8b4197-2cab-408f-9ae3-930c3680c094" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.training/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.training/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Data.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LevelControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LevelControl.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/PlayerControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PlayerControl.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SaveInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SaveInfo.cs" afterDir="false" />
     </list>
@@ -79,7 +80,7 @@
       <workItem from="1632609952243" duration="1570000" />
       <workItem from="1633127271174" duration="1744000" />
       <workItem from="1633129116646" duration="70000" />
-      <workItem from="1633129207698" duration="2637000" />
+      <workItem from="1633129207698" duration="7700000" />
     </task>
     <servers />
   </component>
